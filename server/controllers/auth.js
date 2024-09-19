@@ -33,6 +33,9 @@ export const registerUser = async (req, res, next) => {
       if (!isPasswordCorrect)
         return next(createError(400, "Wrong password or username!"));
   
+      // Supprimer le cookie précédent s'il existe
+     
+  
       const token = jwt.sign(
         { id: user._id, isAdmin: user.isAdmin },
         process.env.JWT
@@ -49,3 +52,19 @@ export const registerUser = async (req, res, next) => {
       next(err);
     }
   };
+  
+
+
+  export const logoutUser = async (req,res,next) => {
+    try {
+
+      res.cookie("access_token" , "",{maxAge:0})
+      res.status(200).json({message:"Logged out successfully"})
+      
+  } catch (error) {
+
+      console.log('Error in logout controller')
+      res.status(500).json('it was server error')
+      
+  }
+  }
